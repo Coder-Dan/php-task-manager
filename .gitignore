@@ -1,0 +1,15 @@
+# ignore the output.html for php debugging
+output.html 
+
+# ignore any .zip files
+*.zip
+
+# ignore the the login.html file
+login.html
+
+# ignore the node_modules 
+node_modules/
+
+# ignore COMMIT msg file
+COMMIT
+
