@@ -14,7 +14,7 @@
     
     // Check login credentials
     // if fail, redirect to login.php
-    if ( $_SESSION['logged_in'] != 1 ) {
+    if ( $_SESSION['logged-in'] != 1 ) {
         $_SESSION['messege'] = "You must log in before viewing your profile page!";
         header("location: index.php");    
     }
@@ -81,7 +81,7 @@
                     $result = $task_stmt->get_result();
 
                     if ($result->num_rows == 0){
-                        printf("<tr>%s</tr>", "No tasks listed. All Clear");
+                        printf("<p class=\"text-center\">%s</p>", "No tasks listed. All Clear");
                     }
                     else{
                         $container = array();
@@ -101,36 +101,39 @@
                         <?php
                             // Can access $container? Yes
                             // var_dump($container);
-                            print("<tr>");
-                            ?>
-                            <!--<th></th>-->
-                            <?php
-                            foreach ($container[0] as $key => $v) {
-                                print("<th>$key</th>");
-                            }
-                            print("</tr>");
+                            if (isset($container)){
+
+                                print("<tr>");
+                                ?>
+                                <!--<th></th>-->
+                                <?php
+                                foreach ($container[0] as $key => $v) {
+                                    print("<th>$key</th>");
+                                }
+                                print("</tr>");
                         ?>
                         </thead>
                         <tbody>
                         <?php
-                            // Can access $container? Yes
-                            // var_dump($container);
-                            foreach ($container as $value) {
-                                print("<tr>\n");
-                                foreach ($value as $key => $v) {
-                                    if (!$v && $v !== 0){
-                                        print("<td>--</td>\n");
-                                    }
-                                    else{
-                                        if($key === 'created_on' || $key === 'completed_on'){
-                                            print("<td>". date_format(date_create($v), DATE_RFC1123)."</td>\n");
+                                // Can access a $container?
+                                // var_dump($container);
+                                foreach ($container as $value) {
+                                    print("<tr>\n");
+                                    foreach ($value as $key => $v) {
+                                        if (!$v && $v !== 0){
+                                            print("<td>--</td>\n");
                                         }
                                         else{
-                                            print("<td>$v</td>\n");
+                                            if($key === 'created_on' || $key === 'completed_on'){
+                                                print("<td>". date_format(date_create($v), DATE_RFC1123)."</td>\n");
+                                            }
+                                            else{
+                                                print("<td>$v</td>\n");
+                                            }
                                         }
                                     }
+                                    print("</tr>");
                                 }
-                                print("</tr>");
                             }
                         ?>
                         </tbody>

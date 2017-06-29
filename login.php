@@ -42,7 +42,7 @@
         $_SESSION['active'] = $rows['active'];
         
         // This is how we'll know the user is logged in
-        $_SESSION['logged_in'] = true;
+        $_SESSION['logged-in'] = true;
 
         //send header to redirect to home page
         header('location: home.php');
