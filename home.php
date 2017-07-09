@@ -65,7 +65,7 @@
         <div class="container">
         <h1 class="home-title">Welcome, <b><?php print $_SESSION['username'];?></b>!</h1>
         <h1 class="banner small">Status, current number tasks, overdue tasks summary here!</h1>
-            <div>
+            <div class="main-section">
                 <!--//tasks.php-->
                 <!--TODO-->
                 <!--<pre>-->
@@ -95,7 +95,7 @@
                     $task_stmt->close();
                 ?>
                 <!--</pre>-->
-                <div class="container">
+                <div class="container overview-wrapper">
                     <table class="table table-bordered table-condensed table-hover">
                         <thead>
                         <?php
@@ -115,6 +115,16 @@
                         </thead>
                         <tbody>
                         <?php
+function printRow($v)
+{
+    ?>
+    <td>
+        <?php echo $v; ?>
+        <button style="display: inline-block" class="btn btn-sm btn-primary" type="submit" name="upvote">+</button>
+        <button style="display: inline-block" class="btn btn-sm btn-danger" type="submit" name="downvote">-</button>
+    </td>
+    <?php
+}
                                 // Can access a $container?
                                 // var_dump($container);
                                 foreach ($container as $value) {
@@ -127,11 +137,15 @@
                                             if($key === 'created_on' || $key === 'completed_on'){
                                                 print("<td>". date_format(date_create($v), DATE_RFC1123)."</td>\n");
                                             }
+                                            else if($key === 'votes'){
+                                                printRow($v);
+                                            }
                                             else{
                                                 print("<td>$v</td>\n");
                                             }
                                         }
                                     }
+                                    // printRow();
                                     print("</tr>");
                                 }
                             }
@@ -139,14 +153,21 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!--//remove_task.php-->
-                TODO
+                <div class="container">
+                    <div class="table-wrapper">
+                        <?php
+                            # code to count all tasks by category
+                            "SELECT count(x) AS 'Tasks_Count'
+                            FROM task 
+                            WHERE user_id=?
+                            GROUP BY category_id";
+                        ?>
+                    </div>
+                </div>
                 <!--//add_task.php-->
-                <div class="add-form">
+                <div class="add-form col-sm-6">
                     <h3 class="task-form-title">Add Task</h3>
                     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" class="" method="post">
-<!--USER VALUES (id, title, description, votes, category_id, user_id, created_on, completed_on, priority, status -->
                         <div class="form-group">
                             <label for="TaskAddInputTitle">Task name</label>
                             <input type="text" class="form-control" name="title" placeholder="Title" required autofocus>
@@ -231,10 +252,43 @@
                                 <!--<option value="COMPLETE">Complete</option>-->
                             </select>
                         </div>
-                        <br>
                         <button class="btn btn-primary" name="add-task" type="submit">Add Task</button>
                     </form>
                 </div>
+                <div class="add-form col-sm-6">
+                    <h3 class="form-title">Add Category</h3>
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" class="" method="post">
+                        <div class="form-group">
+                            <label for="CategoryAddName">Category Name</label>
+                            <input type="text" class="form-control" name="name" placeholder="Text Here" required autofocus>
+                        </div>
+                        <div class="form-group"><label for="CategoryAddDescription">Description</label>
+                        <input type="text" class="form-control" name="value-field" placeholder="Text Here" required>
+                        </div>
+                        <div class="form-group"><label for="CategoryAddTagColour">Tag Colour</label><input type="color" class="form-control" name="tag-color" placeholder="Tag Colour" required>
+                        </div>
+                        <button class="btn btn-primary" name="add-category" type="submit">Add Category</button>
+                    </form>                    
+                </div>
+                <div class="clearfix"></div>
+                <!--//remove_task.php-->
+                <div class="remove-form col-sm-6">
+                    <h3 class="form-title">Remove Actions</h3>
+                    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" class="" method="post">
+                        <div class="form-group">
+                            <label for="CategorySelectName">Category</label>
+                            <select name="category" id="select-category">
+                                <option value="1">Cat1</option>
+                                <option value="2">Cat2</option>
+                                <option value="3">Cat3</option>
+                                <option value="4">Cat4</option>
+                                <option value="5">Cat5</option>
+                            </select>
+                            <button class="btn btn-primary" name="add-category" type="submit">Remove Category</button>
+                        </div>
+                    </form>                    
+                </div>
+                <div class="clearfix"></div>
             </div>
             <div>
                 //tasks.php - pass arguement by category

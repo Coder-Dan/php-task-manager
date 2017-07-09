@@ -50,6 +50,7 @@ CREATE TABLE Category(
     id              INT NOT NULL AUTO_INCREMENT,
     name            VARCHAR(100),
     description     VARCHAR(300),
+    color           VARCHAR(100), # HEX DECIMAL VALUE ?
     user_id         INT,
     PRIMARY KEY (id)
     -- FOREIGN KEY (user_id) REFERENCES User(id)
